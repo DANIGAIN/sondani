@@ -10,11 +10,16 @@ import Contact from './pages/Contact/index';
 import Doctors from './pages/Doctors/index';
 import Login from './pages/Auth/login';
 import SignUp from './pages/Auth/SignUp';
+import axios from 'axios';
+import { UserContextProvider } from './contexts/userContext';
 
 
 function App() {
+
+  axios.defaults.baseURL = 'http://localhost:8000';
+  axios.defaults.withCredentials = true;
   return (
-    <>
+    <UserContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Main/>}></Route>
@@ -24,12 +29,9 @@ function App() {
           <Route path='/doctor' element={<Doctors/>}/>
           <Route  path='/login' element={<Login/>}/>
           <Route path='/signUp' element={<SignUp/>} />
-
-          
         </Routes>
       </BrowserRouter>
-
-    </>
+    </UserContextProvider>
   )
 }
 
