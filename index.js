@@ -1,8 +1,9 @@
 const express = require("express");
 const dotenv = require('dotenv').config();
 const app = express();
-const port = process.env.PORT ||8000 ;
+const port = 8000;
 const authRoute = require('./routes/authRoute.js');
+const doctorRoute = require('./routes/doctorRoute.js');
 const {mongoose} = require('mongoose');
 const cookieParser = require('cookie-parser');
 
@@ -15,7 +16,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:false}));
 
+//------------------------------------------- permission images -------------------//
+
+app.use('/images' ,express.static('uploads'));
+
 app.use('/',authRoute);
+app.use('/',doctorRoute);
 
 
 

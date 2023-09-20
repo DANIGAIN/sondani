@@ -1,9 +1,8 @@
 const express = require('express');
+const  multer = require('multer');
 const cors = require('cors');
 const {loginUser , registerUser ,getProfile} = require('../controllers/authController');
-
 const router = express.Router();
-
 
 //middleware 
 
@@ -14,6 +13,8 @@ router.use(
     })
 )
 
+
+//-------------------------------- auth route ----------------------------------//
 router.post('/login', loginUser);
 router.post('/signup',registerUser)
 router.get('/profile',getProfile);
