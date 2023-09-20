@@ -1,4 +1,6 @@
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.css';
+import '../../assets/frontend/css/style.css';
 import Header from "./components/Header"
 import Footer from "./components/Footer";
 import Banner from "./components/Banner";

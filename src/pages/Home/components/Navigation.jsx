@@ -1,13 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
-import { Link } from 'react-router-dom';
-import Appointment from  "../../../components/Appointment";
+import { Link , useNavigate} from 'react-router-dom';
+import Appointment from  "./../../../components/Appointment/Index";
+import { useUserConext } from '../../../hooks/useUserContext';
 
 export default function Navigation() {
 
     const [modalShow, setModalShow] = React.useState(false);
+    const { user } = useUserConext();
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(!user) {    
+            navigate('/login');
+        }
+    },[])
 
     useEffect(() =>{ 
         window.addEventListener("scroll",function(){

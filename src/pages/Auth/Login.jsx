@@ -23,7 +23,7 @@ export default function Login() {
                 console.log(responce.error);
             } else {
                 setData({});
-                navigate('/')
+                navigate('/dashboard')
 
             }
         } catch (error) {
