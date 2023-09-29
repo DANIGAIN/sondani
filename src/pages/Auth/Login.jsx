@@ -2,36 +2,18 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { useData } from '../../hooks/useData'
+import { loginApi } from '../../api/loginApi'
 
 export default function Login() {
-
+    const {user ,setUser} = useData();
     const navigate = useNavigate();
-    const {data ,setData} = useData();
-    const sumbitHandeler = async (e) => {
+
+    const sumbitHandeler = async(e) =>{
         e.preventDefault();
-        
-        const { email, password } = data;
-        try {
-
-            const responce = await axios.post('/login', {
-                email, password
-            });
-
-            if (responce.error) {
-                console.log(responce.error);
-            } else {
-                setData({});
-                navigate('/dashboard')
-
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
+        const res = await loginApi(user);
+        res?navigate('/'):''; 
     }
-
     return (
         <>
             <section className="vh-100">
@@ -48,11 +30,11 @@ export default function Login() {
                             <form onSubmit={sumbitHandeler}>
                                 <div className="form-outline mb-4">
                                     <input
-                                        value={data.email}
+                                        value={user.email}
                                         type="email"
                                         id="form1Example13"
                                         className="form-control form-control-lg"
-                                        onChange={(e) => setData((prev) => ({ ...prev, email: e.target.value }))}
+                                        onChange={(e) => setUser((prev) => ({ ...prev, email: e.target.value }))}
                                     />
                                     <label className="form-label" htmlFor="form1Example13">
                                         Email address
@@ -62,12 +44,14 @@ export default function Login() {
                                 <div className="form-outline mb-4">
                                     <input
                                         type="password"
-                                        value={data.password}
-                                        id="form1Example23"
+                                        name="password"
+                                        autoComplete="on"
+                                        value={user.password}
+                                        id="pass"
                                         className="form-control form-control-lg"
-                                        onChange={(e) => setData((prev) => ({ ...prev, password: e.target.value }))}
+                                        onChange={(e) => setUser((prev) => ({ ...prev, password: e.target.value }))}
                                     />
-                                    <label className="form-label" htmlFor="form1Example23">
+                                    <label className="form-label" htmlFor="pass">
                                         Password
                                     </label>
                                 </div>

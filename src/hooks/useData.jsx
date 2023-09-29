@@ -3,11 +3,13 @@ import { useState } from "react";
 
 export const useData = () =>
 {
-    const [data, setData] = useState({
+    const [user, setUser] = useState({
+        id:'',
         name: '',
         email: '',
         password: '',
-        isAdmin: false
+        role: 10 , 
+        IsLogin:true,
       });
-      return {data , setData};
+      return {user , setUser};
 }

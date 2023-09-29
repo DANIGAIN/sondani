@@ -1,37 +1,40 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
-import { Link , useNavigate} from 'react-router-dom';
-import Appointment from  "./../../../components/Appointment/Index";
+import { Link, useNavigate } from 'react-router-dom';
+import Appointment from "./../../../components/AddAppointment";
 import { useUserConext } from '../../../hooks/useUserContext';
+import { getScrall } from '../../../helpers/navHelper';
+import { getAppointment } from '../../../api/appApi';
+import { useAppContext } from '../../../hooks/useAppContext';
 
 export default function Navigation() {
 
-    const [modalShow, setModalShow] = React.useState(false);
+    const { appointments, setAppointments } = useAppContext();
+    const [modalShow, setModalShow] = useState(false);
     const { user } = useUserConext();
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(!user) {    
-            navigate('/login');
-        }
-    },[])
+    useEffect(() => {
+        getAppointment(user.id).then((res) => {
+            setAppointments(res.data);
+        })
+    }, [])
 
-    useEffect(() =>{ 
-        window.addEventListener("scroll",function(){
-            var header = document.querySelector("header");
-            header.classList.toggle("sticky",scrollY>100);
-         });
-
-    } ,[])
+    useEffect(() => {
+        getScrall();
+    }, [])
 
     return (
         <>
-        <Appointment 
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-        />
+            <Appointment
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                req='create'
+                setAppointments={setAppointments}
+                id=''
+            />
             <header>
                 <div className="container">
                     <div className="row align-items-center justify-content-between">
@@ -59,7 +62,7 @@ export default function Navigation() {
                                         <ul className="navbar-nav">
                                             <li className="nav-item">
                                                 <Link
-                                             
+
                                                     className={`nav-link`}
                                                     aria-current="page"
                                                     to="/"
@@ -97,10 +100,19 @@ export default function Navigation() {
                                                 <Link
                                                     className={`nav-link `}
                                                     to="/contact"
-                                                 >
+                                                >
                                                     Contact
                                                 </Link>
                                             </li>
+
+                                            {appointments.length != 0 && <li className="nav-item">
+                                                <Link
+                                                    className={`nav-link `}
+                                                    to="/appointment"
+                                                >
+                                                    Appointment List
+                                                </Link>
+                                            </li>}
 
                                         </ul>
                                     </div>
@@ -157,15 +169,29 @@ export default function Navigation() {
                                 </div>
                             </form>
                         </div>
-                        <div className="col-lg-2 col-sm-6">        
-                            <button
-                                type="button"
-                                className="btn btn_appointment"
-                                variant="primary"
-                                onClick={() => setModalShow(true)}  
-                            >
-                               Make an appointment
-                            </button>
+                        <div className="col-lg-2 col-sm-6">
+                            {user.IsLogin ?
+                                (
+                                    <button
+                                        type="button"
+                                        className="btn btn_appointment"
+                                        variant="primary"
+                                        onClick={() => setModalShow(true)}
+                                    >
+                                        Make an appointment
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="btn btn_appointment"
+                                        variant="primary"
+                                        onClick={() => navigate('/login')}
+                                    >
+                                        Make an appointment
+                                    </button>
+                                )
+                            }
+
                         </div>
                         <div className="col-lg-1">
                             <a href="#" className="header_social_link">

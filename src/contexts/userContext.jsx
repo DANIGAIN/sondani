@@ -1,31 +1,19 @@
-import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect } from "react";
 import Loading from "../pages/Loading";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useData } from "../hooks/useData";
+import { getProfileApi } from "../api/getProfileApi";
 
-// Create a UserContext
 export const UserContext = createContext({});
-
 export function UserContextProvider({ children }) {
-    const [user, setUser] = useState(null);
-
+    const {user, setUser} = useData();
     useEffect(() => {
-        const getUser = async () => {
-            const res = await axios.get('/profile');
-            setUser(res.data);
-
-        };
-
-
-        getUser();
-    }, []);
-
-    if (user === null) {
+         getProfileApi(setUser);
+    },[]);
+    if (user.email === '' && user.IsLogin) {
         return <Loading />
     }
-
     return (
         <div>
          

@@ -1,47 +1,28 @@
-import React  from 'react'
+import React, { useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { toast } from 'react-toastify';
 import axios from 'axios';
-
+import MultiSelect from  'react-multiple-select-dropdown-lite'
+import  'react-multiple-select-dropdown-lite/dist/index.css'
+import  {useDoctor} from '../hooks/useDoctor'
+import { getSpecialists } from "../api/spApi";
+import { handleSubmit } from '../api/doctorApi';
 function AddDoctor(props) {
-  const [doctorData, setDoctorData] = useState({
-    name: '',
-    specialist: '',
-    rating: '',
-    image: ''
+  const {doctorData, setDoctorData} = useDoctor();
+  const [specialist, setSpecialist] = useState([]);
+
+  useEffect(() => {
+      getSpecialists().then((res)=>setSpecialist(res))
+  }, [])
+
+  const  options  = []
+  specialist.map((data)=>{
+      const obj = { label: data.category  , value:data._id}
+      options.push(obj);
   })
 
 
-  const handleSubmit = async () => {
-
-    try {
-
-      const formdate = new FormData();
-      formdate.append('image', doctorData.image);
-      formdate.append('name', doctorData.name);
-      formdate.append('specialist', doctorData.specialist);
-      formdate.append('rating', doctorData.rating);
-
-      const response = await axios.post('/doctor', formdate, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-
-      if (response.error) {
-        toast.error(response.error.message);
-      } else {
-        props.onHide();
-        toast.success("Add a Doctor");
-      }
-
-    } catch (error) {
-      toast.error(error.message);
-    }
-
-  }
   return (
     <>
       <Modal
@@ -69,26 +50,28 @@ function AddDoctor(props) {
                   />
                 </div>
               </div>
-
             </div>
-            <div className="form-outline mb-4">
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                id="specialist"
-                value={doctorData.specialist}
-                onChange={(e) =>
-                  setDoctorData((prev) => ({ ...prev, specialist: e.target.value }))
-                }
-              >
-                <option value="specialist doctor">specialist doctor</option>
-                <option value="Neurosurgeon">Neurosurgeon</option>
-                <option value="Cardiologist">Cardiologist</option>
-                <option value="Surgeon">Surgeon</option>
-                <option value="Dentist">Dentist</option>
-                <option value="Eye Specialist">Eye Specialist</option>
-                <option value="Urology">Urology</option>
-              </select>
+            <div className="row mb-4">
+              <div className="col-12">
+                <div className="form-outline">
+                  <input type="email"
+                    id="email"
+                    className="form-control"
+                    placeholder='Doctor Email'
+                    value={doctorData.email}
+                    onChange={(e) => setDoctorData((prev) => ({ ...prev, email: e.target.value }))}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="form-outline mb-4 ">
+            <MultiSelect
+               onChange={val => setDoctorData((perv)=>({...perv ,specialist:val}))}
+               options={options}
+               placeholder="Select specialist"
+               selectionLimit="5"
+               className='w-100'
+            />
             </div>
 
             <div className="form-outline mb-4">
@@ -123,7 +106,7 @@ function AddDoctor(props) {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleSubmit}> Submit</Button>
+          <Button onClick={()=>handleSubmit(doctorData,props.onHide)}> Submit</Button>
         </Modal.Footer>
       </Modal>
 

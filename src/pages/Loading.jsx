@@ -1,21 +1,23 @@
-import React from 'react'
-// import {useUserConext} from './../hooks/useUserContext'
-// import { useEffect } from 'react';
+import PuffLoader from "react-spinners/PuffLoader";
+const override = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+   
+};
 export default function Loading() {
 
-    // const {user ,  setUser} = useUserConext();
-    // useEffect(()=>{
-
-    //   console.log(user);
-    // },[])
-
-
     return (
-            <div className=" d-flex  align-items-center justify-content-center m-5 ">
-                <div className=" spinner-border w-5 " role="status">
-                    <span className=" sr-only">Loading.........</span>
+        <div className="mt-5">
+                <div className="sweet-loading">
+                    <PuffLoader                    
+                        loading={true}
+                        cssOverride={override}
+                        size={300}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
                 </div>
-            </div>
-
+        </div>
     )
 }

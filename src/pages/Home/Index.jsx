@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../assets/frontend/css/style.css';
 import Header from "./components/Header"
@@ -11,7 +11,9 @@ import AboutSection from "./components/AboutSection";
 import LabSection from "./components/LabSection";
 import Choose from "./components/Choose";
 import MsgDoctor from "./components/MsgDoctor";
+
 export default function Main(){
+
     return(
         <>
             <Header />

@@ -1,35 +1,16 @@
-import { Link } from 'react-router-dom'
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'
 import { useData } from '../../hooks/useData';
-
+import  {signupApi}  from '../../api/signupApi';
 export default function SignUp() {
-
+    const {user , setUser} = useData();
     const navigate = useNavigate();
-    const {data , setData} = useData();
-    const submitHandler = async (e) => {
+
+    const sumbitHandeler = async(e) =>{
         e.preventDefault();
-        
-        const { name, email, password, isAdmin } = data;
-        try {
-
-            const response = await axios.post('/signup', {
-                name, email, password, isAdmin
-            });
-            if (response.error) {
-
-                console.log(response.error);
-
-            } else {
-                setData({});
-                navigate('/login');
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
+        const res = await signupApi(user);
+        res?navigate(-1):'';
     }
-
+    
 
     return (
         <>
@@ -44,15 +25,15 @@ export default function SignUp() {
                             />
                         </div>
                         <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                            <form onSubmit={submitHandler}>
+                            <form onSubmit={sumbitHandeler}>
 
                                 <div className="form-outline mb-4">
                                     <input
                                         type="text"
                                         id="form1Example11"
                                         className="form-control form-control-lg"
-                                        value={data.name}
-                                        onChange={(e) => setData((prev) => ({ ...prev, name: e.target.value }))}
+                                        value={user.name}
+                                        onChange={(e) => setUser((prev) => ({ ...prev, name: e.target.value }))}
                                     />
                                     <label className="form-label" htmlFor="form1Example11">
                                         Full Name
@@ -63,8 +44,8 @@ export default function SignUp() {
                                         type="email"
                                         id="form1Example13"
                                         className="form-control form-control-lg"
-                                        value={data.email}
-                                        onChange={(e) => setData((prev) => ({ ...prev, email: e.target.value }))}
+                                        value={user.email}
+                                        onChange={(e) => setUser((prev) => ({ ...prev, email: e.target.value }))}
                                     />
                                     <label className="form-label" htmlFor="form1Example13">
                                         Email address
@@ -74,25 +55,31 @@ export default function SignUp() {
                                 <div className="form-outline mb-4">
                                     <input
                                         type="password"
-                                        id="form1Example23"
+                                        name="password"
+                                        autoComplete="on"
+                                        id="pid"
                                         className="form-control form-control-lg"
-                                        value={data.password}
-                                        onChange={(e) => setData((prev) => ({ ...prev, password: e.target.value }))}
+                                        value={user.password}
+                                        onChange={(e) => setUser((prev) => ({ ...prev, password: e.target.value }))}
                                     />
-                                    <label className="form-label" htmlFor="form1Example23">
+                                    <label className="form-label" htmlFor="pid">
                                         Password
                                     </label>
                                 </div>
+
                                 <div className="form-outline mb-4">
                                     <input
                                         type="password"
-                                        id="form1Example22"
+                                        name="conform-password"
+                                        autoComplete="on"
+                                        id="cpassword"
                                         className="form-control form-control-lg"
                                     />
-                                    <label className="form-label" htmlFor="form1Example22">
+                                    <label className="form-label" htmlFor="cpassword">
                                         Conform Password
                                     </label>
                                 </div>
+                             
 
                                 <button type="submit" className="btn btn-primary btn-lg btn-block">
                                     Sign Up
