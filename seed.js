@@ -11,9 +11,8 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 
-
 const SeedDB = async() =>{
-    await User.deleteMany({'isAdmin':true});
+    await User.deleteMany({'role': 0});
     console.log("Droping ALL admin");
     await User.insertMany(userSeedData);
 }

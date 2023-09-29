@@ -1,6 +1,8 @@
 const User = require('../models/user');
+const Dostor = require('../models/doctor')
 const { hashPassword, comparePassword } = require('../helpers/auth')
 const jwt = require('jsonwebtoken');
+const { json } = require('express');
 
 const loginUser = async (req, res) => {
     try {
@@ -17,10 +19,13 @@ const loginUser = async (req, res) => {
         if (matched) {
 
             //jwt ---->
-            jwt.sign({ email: user.email, name: user.name, id: user._id ,isAdmin: user.isAdmin}, process.env.JWT_SECRET, {}, (error, token) => {
+            jwt.sign({ email: user.email, name: user.name, id: user._id ,role: user.role}, process.env.JWT_SECRET, {}, (error, token) => {
                 if (error) throw error;
-                res.cookie('token', token).json(user);
-            })
+                res.cookie('token', token,{
+                    expires:new Date(Date.now() + 2589200000),
+                    httpOnly:true ,
+                }).json(user);
+            });
 
 
 
@@ -38,7 +43,7 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
 
     try {
-        const { name, email, password, isAdmin } = req.body;
+        const { name, email, password, role } = req.body;
         if (!name) {
             return res.json({
                 error: "name is require"
@@ -56,7 +61,7 @@ const registerUser = async (req, res) => {
         }
 
         const exist = await User.findOne({ email });
-
+    
         if (exist) {
             res.json({
                 error: "Email is taken already"
@@ -66,8 +71,14 @@ const registerUser = async (req, res) => {
         const hashedPassword = await hashPassword(password);
 
         const user = await User.create({
-            name, email, isAdmin, password: hashedPassword
+            name, email, role, password: hashedPassword
         });
+
+        const existDoctorList = await Dostor.find({email});
+        if(existDoctorList)
+        {
+            await User.updateOne({email},{role:1})
+        }
 
         return res.json(user);
 
@@ -93,8 +104,66 @@ const getProfile = async(req, res) => {
         res.json(null)
     }
 }
+const getUsers = async(req, res) =>{
+    try{
+
+        const users = await User.find();
+        const usersData= [];
+        users.map((user, ind)=>{
+
+            let obj = {
+                id : user._id,
+                name: user.name,
+                role:user.role,
+                email:user.email
+            }
+            usersData.push(obj);
+
+        }) 
+
+        res.json(usersData);
+
+    }catch(error){
+        res.json({
+            error:'user not found'
+        })
+    }
+}
+
+const removeUser = async(req, res) =>
+{
+    try{
+
+        const {id} = req.params;
+    
+        const dUser = await User.deleteOne({_id :id});
+        res.json(dUser);
+        
+    }catch(erro)
+    {
+        res.json({
+            error:"User are not deleted",
+        })
+    }
+}
+
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('token');
+        res.json({
+            message: 'Logout successful',
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+};
+
+
+
 
 module.exports = {
-    loginUser, registerUser ,getProfile
+    loginUser, registerUser ,getProfile , getUsers ,removeUser ,logoutUser
 }
 

@@ -1,53 +1,39 @@
-const { json } = require('express');
+
 const Doctor = require('./../models/doctor');
+
+const User = require('../models/user')
 
 const addDoctor = async(req , res )=>
 {
     try{
 
-        const {name  ,specialist , rating} = req.body;
-
-        if(!name){
-            res.json({
-                error:"name is require"
-            })
-        }
-        if(!specialist) {
-            res.json({
-                error:"specialist is require"
-            })
-        }
-        if(!rating){
-            res.json({
-                error:"reting fild is require"
-            })
-        }
-        
+        const {name  ,specialist , rating,email} = req.body;
         const obj = {
             name , 
-            specialist ,
+            specialist:specialist.split(","),
             rating ,
+            email,
             image :req.file.filename
         }
-    
         const doctor = await Doctor.create(obj);
+        
+        //change user Role 
+        await User.updateOne({email:email,role:10},{role:1})
         res.json(doctor);
         
     }catch(error){
-      
         res.json({
-            error:"Doctor  is not added"
+            error:error.message,
         })
     }
 }
 
 const getDoctor = async(req, res) =>{
 
-    const doctors  =  await Doctor.find();
+    const doctors = await Doctor.find().populate('specialist');
     const newDoctors = [];
     doctors.map((value , key) =>
     {
-
         const obj = {
             'id' : value._id,
             'specialist': value.specialist,
@@ -61,12 +47,12 @@ const getDoctor = async(req, res) =>{
     res.json(newDoctors);
 }
 
-const deleteDoctor = (req , res) =>{
+const deleteDoctor = async(req , res) =>{
     
     try{
         const {id} = req.params;
-        const user = Doctor.find({_id :id });
-        const dUser = Doctor.deleteOne(user);
+    
+        const dUser = await Doctor.deleteOne({_id :id});
         res.json(dUser);
 
     }catch(error)
@@ -78,8 +64,28 @@ const deleteDoctor = (req , res) =>{
 }
 
 
+
+
+const findDoctor = async(req,res)=>{
+
+    try{
+
+        const{id} = req.params ;
+        const doctor = await Doctor.find({specialist:id})
+        res.json(doctor)
+
+    }catch(error)
+    {
+        res.json({
+            error:error.message,
+        })
+    }
+}
+
+
 module.exports = {
     addDoctor ,
     getDoctor,
-    deleteDoctor
+    deleteDoctor ,
+    findDoctor
 }

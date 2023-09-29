@@ -9,7 +9,16 @@
      },
      
      password:String ,
-     isAdmin: Boolean  
+     role: Number ,
+     createdAt: {
+      type: Date,
+      immutable: true,
+      default: () => Date.now(),
+    },
+    updatedAt: { 
+      type: Date,
+      default: () => Date.now(),
+    },
 
 })
 

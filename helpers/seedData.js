@@ -8,17 +8,17 @@ const userSeedData = [
     {
         'name':"Dani Gain",
         'email':"danigain1234@gmail.com",
-        'isAdmin':true
+         'role':0
     },
     {
         'name':"Ms x",
         'email':"x@gmail.com",
-        'isAdmin':true
+        'role':0
     },
     {
         'name':"Mr y",
         'email':"y@gmail.com",
-        'isAdmin':true
+        'role':0
     }
 ];
 
