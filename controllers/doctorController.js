@@ -1,5 +1,7 @@
 
 const Doctor = require('./../models/doctor');
+const path = require('path')
+const fs = require('fs');
 
 const User = require('../models/user')
 
@@ -51,6 +53,15 @@ const deleteDoctor = async(req , res) =>{
     
     try{
         const {id} = req.params;
+        const doctor = await Doctor.find({_id :id});
+        let reqPath = path.join(__dirname, '../' , 'uploads/',doctor[0].image)
+        fs.unlink(reqPath,(err)=>{
+            if(err){
+                console.log(err);
+                return ;
+            }
+            console.log("Deleted image successfully")
+        });
     
         const dUser = await Doctor.deleteOne({_id :id});
         res.json(dUser);
