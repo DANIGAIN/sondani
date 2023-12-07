@@ -2,10 +2,31 @@ import React from 'react'
 import Header from '../Home/components/Header'
 import Navigation from '../Home/components/Navigation'
 import Footer from '../Home/components/Footer'
+import { useState } from 'react'
+import { handelSubmit } from '../../api/contructApi'
+import { useUserConext } from '../../hooks/useUserContext'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
-export default function
-    () {
+export default function() {
+    const {user} = useUserConext();
+    const navigator = useNavigate();
+    const [question ,setquestion] = useState({
+        userId:user.id,
+        name:'',
+        subject:'' ,
+        email:'',
+        message:''
+    })
+    const handelForm = async(e) =>{
+        if(user.IsLogin){
+            const res  =  handelSubmit(question , setquestion)
+            if(res) navigator(-1);
+        }else{
+            toast('please login first  ....' )
+        }    
+    }
     return (
         <div>
                 <Header/>
@@ -14,7 +35,7 @@ export default function
                     <div className="row justify-content-center">
                         <div className="col-lg-9">
                             <h1 className="mb-3 text-center">Ask A Question</h1>
-                            <form>
+                            <form >
                                 <div className="row g-3">
                                     <div className="col-md-6">
                                         <label htmlFor="your-name" className="form-label">
@@ -23,9 +44,12 @@ export default function
                                         <input
                                             type="text"
                                             className="form-control"
-                                            id="your-name"
-                                            name="your-name"
+                                            id="name"
+                                            name="name"
                                             required=""
+                                            defaultValue={question.value}
+                                            onChange={(e) => setquestion((prev) =>({...prev , name:e.target.value}))}
+                                            
                                         />
                                     </div>
                                     <div className="col-md-6">
@@ -38,6 +62,8 @@ export default function
                                             id="your-email"
                                             name="your-email"
                                             required=""
+                                            defaultValue={question.email}
+                                            onChange={(e) => setquestion((prev) =>({...prev , email:e.target.value}))}
                                         />
                                     </div>
                                     <div className="col-12">
@@ -49,6 +75,8 @@ export default function
                                             className="form-control"
                                             id="your-subject"
                                             name="your-subject"
+                                            defaultValue={question.subject}
+                                            onChange={(e) => setquestion((prev) =>({...prev , subject:e.target.value}))}
                                         />
                                     </div>
                                     <div className="col-12">
@@ -61,10 +89,12 @@ export default function
                                             name="your-message"
                                             rows={5}
                                             required=""
-                                            defaultValue={""}
+                                      
+                                            defaultValue={question.message}
+                                            onChange={(e) => setquestion((prev) =>({...prev , message:e.target.value}))}
                                         />
                                     </div>
-                                    <input className='btn btn-primary mt-5 ' value="Send"/>
+                                    <input className='btn btn-primary mt-5 ' defaultValue="Send" onClick={handelForm}/>
                                 
                                 </div>
                             </form>

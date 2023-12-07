@@ -1,18 +1,17 @@
 import React, { useEffect} from 'react'
-import { useAppContext } from '../../hooks/useAppContext';
+
 import { getAllAppointment } from '../../api/appApi';
 import { convertUtcToBst } from '../../helpers/appHelper';
 import { StatusColor, Status } from '../../assets/Constant';
 import { handelStatue ,handelDelete } from '../../api/appApi';
 
 function AppointmentList() {
-    const { appointments, setAppointments } = useAppContext();
+   
     useEffect(() => {
         getAllAppointment().then((req) => setAppointments(req.data))
     }, [])
 
     return (
-
         <div>
             <div className="row">
                 <div className="col-12">
@@ -34,8 +33,8 @@ function AppointmentList() {
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        {appointments.map((appointment, ind) =>
+                    
+                                        { appointments.map((appointment, ind) =>
                                         (
 
                                             <tr key={ind}>
@@ -67,7 +66,7 @@ function AppointmentList() {
                                                 }
 
                                             </tr>
-                                        ))}
+                                        )) }
                                     </tbody>
                                 </table>
                             </div>

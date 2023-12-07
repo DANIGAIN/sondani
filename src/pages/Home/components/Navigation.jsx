@@ -74,7 +74,7 @@ export default function Navigation() {
                                                 <Link
                                                     className={`nav-link `}
                                                     to="/services">
-                                                    Services
+                                                    Blood bank
                                                 </Link>
                                             </li>
                                             <li className="nav-item">

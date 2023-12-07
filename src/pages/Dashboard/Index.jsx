@@ -2,19 +2,22 @@ import '../../assets/backend/css/vendor/fullcalendar.min.css'
 import '../../assets/backend/css/icons.min.css'
 import '../../assets/backend/css/app.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faList, faUser, faUserDoctor } from '@fortawesome/free-solid-svg-icons'
+import {  faContactBook, faList, faQuestion, faUser, faUserDoctor } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect  , useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUserConext } from '../../hooks/useUserContext'
 import UserList from './UserList'
 import DoctorList from './DoctorList'
 import SpecialistList from './SpecialistList';
+import ContactList from './contactList';
 import AppointmentList from './AppointmentList'
 import { getDoctors } from '../../api/doctorApi'
+import ServiceList  from './ServiceList'
 import { getUser } from '../../api/userApi'
 import { countStatue } from '../../api/appApi'
 import {getLogout} from '../../api/logoutApi'
 import Layout from './Layout'
+import { faServicestack } from '@fortawesome/free-brands-svg-icons'
 function Index() {
     const { user } = useUserConext();
     const navigate = useNavigate();
@@ -112,6 +115,18 @@ function Index() {
                                     <span className='m-2'> Appointment  </span>
                                 </a>
                             </li>
+                            <li className="side-nav-item">
+                                <a onClick={()=>setActiveState('Contact')} className="side-nav-link">
+                                    <FontAwesomeIcon icon={faQuestion} />
+                                    <span className='m-2'> Question </span>
+                                </a>
+                            </li>
+                            <li className="side-nav-item">
+                                <a onClick={()=>setActiveState('Service')} className="side-nav-link">
+                                    <FontAwesomeIcon icon={faServicestack} />
+                                    <span className='m-2'> Blod Service</span>
+                                </a>
+                            </li>
 
 
                         </ul>
@@ -135,7 +150,7 @@ function Index() {
                                         aria-expanded="false"
                                     >
                                         <i className="dripicons-bell noti-icon" />
-                                        {status.painding?(<span class="noti-icon-badge"/>):''}
+                                        {status.painding?(<span className="noti-icon-badge"/>):''}
                                     </a>
                                     
                                 </li>
@@ -244,6 +259,8 @@ function Index() {
                                     /> : ''}
 
                                     {(activeState === 'Specialist') ? <SpecialistList/> : ''}
+                                    {(activeState == 'Contact') ?<ContactList/>:''}
+                                    {(activeState == 'Service') ?<ServiceList/>:''}
 
                                     <div className="modal fade" id="event-modal" tabIndex={-1}>
                                         <div className="modal-dialog">
