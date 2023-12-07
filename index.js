@@ -4,6 +4,8 @@ const app = express();
 const port = 8000;
 const authRoute = require('./routes/authRoute.js');
 const doctorRoute = require('./routes/doctorRoute.js');
+const contactRouter = require('./routes/contactRouter.js')
+const serviceRouter = require('./routes/serviceRoute.js')
 const {mongoose} = require('mongoose');
 const cookieParser = require('cookie-parser');
 
@@ -22,6 +24,8 @@ app.use('/images' ,express.static('uploads'));
 
 app.use('/',authRoute);
 app.use('/',doctorRoute);
+app.use('/',contactRouter);
+app.use('/',serviceRouter);
 
 
 
