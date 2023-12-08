@@ -68,10 +68,11 @@ const deleteAppointment =  async(req , res) =>{
 
 const findAppointmentById = async(req,res) =>{
 
-    const {id} = req.params.id;
+    const {id} = req.params;
     try{
 
         const app = await Appointment.find({_id:id}).populate(['doctor','specialist'])
+        // const app = await Appointment.find();
         res.json(app);
     }catch(error)
     {
