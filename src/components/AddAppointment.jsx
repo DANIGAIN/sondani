@@ -19,7 +19,7 @@ function Index(props) {
     useEffect(() => {
         if (props.id) {
             getAppointmentbyId(props.id).then((res) => {
-                setPatientData((prev) => ({ ...prev, name: res.data[0].name, age: res.data[0].age, address: res.data[0].address , email: res.data[0].email ,phone: res.data[0].phone}))
+                 setPatientData((prev) => ({ ...prev, name: res.data[0].name, age: res.data[0].age, address: res.data[0].address , email: res.data[0].email ,phone: res.data[0].phone}))
             })
         }
     }, [props.id])

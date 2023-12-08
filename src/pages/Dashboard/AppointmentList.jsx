@@ -1,12 +1,14 @@
-import React, { useEffect} from 'react'
+import React, { useEffect ,useState} from 'react'
 
-import { getAllAppointment } from '../../api/appApi';
+import { getAllAppointment  } from '../../api/appApi';
 import { convertUtcToBst } from '../../helpers/appHelper';
 import { StatusColor, Status } from '../../assets/Constant';
 import { handelStatue ,handelDelete } from '../../api/appApi';
 
+
 function AppointmentList() {
    
+    const [ appointments ,setAppointments] = useState([]);
     useEffect(() => {
         getAllAppointment().then((req) => setAppointments(req.data))
     }, [])

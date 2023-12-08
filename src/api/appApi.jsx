@@ -6,6 +6,7 @@ export const handelSubmit = async (onHide, patientData ,req ,id ,setAppointments
 
         let res ;
         if(req == 'edit'){
+            console.log(patientData)
              res = await axios.put(`/appointment/${id}`,patientData);
         }else 
         {
