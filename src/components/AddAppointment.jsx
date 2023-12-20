@@ -110,8 +110,10 @@ function Index(props) {
                             <select className="form-select"
                                 aria-label="Default select example"
                                 onChange={(e) => hendelchange(e, setPatientData, setDoctors)}
-                                id="juvfd">
-                                <option >Tropic </option>
+                                id="juvfd"
+                                defaultValue={''}
+                                >
+                                <option value='' disabled>Tropic</option>
                                 {specialist.map((sp, ind) =>
                                 (
                                     <option key={ind} value={sp._id}>{sp.category}</option>
@@ -126,7 +128,7 @@ function Index(props) {
                                 value={patientData.doctor}
                                 onChange={(e) => setPatientData((prev) => ({ ...prev, doctor: e.target.value }))}
                                 id="doctor">
-                                <option value=""> Preferred Doctor  .. </option>
+                                <option disabled  value=''> Preferred Doctor  .. </option>
                                 {doctors.map((doctor, ind) => (
                                     <option key={ind} value={doctor._id}>{doctor.name}</option>
                                 ))}

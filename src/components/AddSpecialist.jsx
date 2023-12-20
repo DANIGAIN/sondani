@@ -49,7 +49,7 @@ function AddSpecialist(props) {
               <input type="text"
                 id="form6Example1"
                 className="form-control"
-                placeholder='Doctor name'
+                placeholder='Specilist name'
                 value={category}
                 onChange={(e)=>setCategory(e.target.value)}
               />

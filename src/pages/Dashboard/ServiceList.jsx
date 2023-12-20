@@ -65,8 +65,8 @@ function ServiceList() {
                                                 Provider
                                             </th>
                                             <th className="all">group</th>
-                                            <th>info</th>
                                             <th>phone</th>
+                                            <th>info</th>
                                             <th>price</th>
                                             <th style={{ width: 85 }}>Action</th>
                                         </tr>

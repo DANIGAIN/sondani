@@ -3,10 +3,9 @@ import { toast } from 'react-toastify';
 
 export const handelSubmit = async (onHide, patientData ,req ,id ,setAppointments ,user) => {
     try {
-
         let res ;
         if(req == 'edit'){
-            console.log(patientData)
+           
              res = await axios.put(`/appointment/${id}`,patientData);
         }else 
         {

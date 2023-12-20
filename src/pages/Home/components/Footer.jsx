@@ -12,7 +12,6 @@ export default function Footer() {
                 className="text-white text-center text-lg-start"
                 style={{ backgroundColor: "#3091F2" }}
             >
-
                 <div className="container p-4">
 
                     <div className="row mt-4">
@@ -24,7 +23,7 @@ export default function Footer() {
                                     <span className="fa-li">
                                         <FontAwesomeIcon icon={faHome} />
                                     </span>
-                                    <span className="ms-2">New York, NY 10012, US</span>
+                                    <span className="ms-2">474, Nirala-24 No Road, Khulna</span>
                                 </li>
                                 <li className="mb-3">
                                     <span className="fa-li">
@@ -37,7 +36,7 @@ export default function Footer() {
                                     <span className="fa-li">
                                         <FontAwesomeIcon icon={faPhone} />
                                     </span>
-                                    <span className="ms-2">+ 01 234 567 88</span>
+                                    <span className="ms-2">+880-2-9360346</span>
                                 </li>
                                 <li className="mb-3">
                                     <span className="fa-li">
