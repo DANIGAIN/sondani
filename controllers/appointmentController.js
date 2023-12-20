@@ -3,7 +3,8 @@ const Appointment = require('../models/appointment');
 
 
 const addAppointment = async(req,res) =>{
-
+  
+ 
     const {patientId,name,age,address,email,phone,doctor,tropic,app_Time,status} = req.body;
     const date = new Date(app_Time);
     try{
@@ -11,7 +12,6 @@ const addAppointment = async(req,res) =>{
         const obj= {
             patientId,
             name,
-            age:parseInt(age),
             address,
             email,
             phone,
@@ -20,11 +20,9 @@ const addAppointment = async(req,res) =>{
             app_Time:date.toISOString(),
             status
         }
-
-     
-         const specialist = await Appointment.create(obj)
-        
-         return res.json(specialist)
+        if(age != '') obj.age = parseInt(age);     
+        const specialist = await Appointment.create(obj)
+        return res.json(specialist)
 
     }catch(error)
     {
